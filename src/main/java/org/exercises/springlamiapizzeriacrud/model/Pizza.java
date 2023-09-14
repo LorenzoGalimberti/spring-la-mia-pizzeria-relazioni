@@ -14,8 +14,17 @@ public class Pizza {
 
     private String description;
     private BigDecimal price;
+    private String url_photo;
    // getters and setters
 
+
+    public String getUrl_photo() {
+        return url_photo;
+    }
+
+    public void setUrl_photo(String url_photo) {
+        this.url_photo = url_photo;
+    }
 
     public Integer getId() {
         return id;

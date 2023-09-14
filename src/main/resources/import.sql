@@ -1,3 +1,5 @@
-INSERT INTO pizze (name, description,price) VALUES('Margherita', 'Pomodoro,Mozzarella', 5);
-INSERT INTO pizze (name, description,price) VALUES('Marinara', 'Pomodoro,Aglio,Origano', 4.5);
-INSERT INTO pizze (name, description,price) VALUES('Biancaneve', 'Mozzarella', 5.5);
+INSERT INTO pizze (name, description,price,url_photo) VALUES('Margherita', 'Pomodoro,Mozzarella', 5,'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg/260px-Eq_it-na_pizza-margherita_sep2005_sml.jpg');
+INSERT INTO pizze (name, description,price,url_photo) VALUES('Marinara', 'Pomodoro,Aglio,Origano', 4.5,'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg/260px-Eq_it-na_pizza-margherita_sep2005_sml.jpg');
+INSERT INTO pizze (name, description,price,url_photo) VALUES('Biancaneve', 'mozzarella', 5.5,'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg/260px-Eq_it-na_pizza-margherita_sep2005_sml.jpg');
+INSERT INTO pizze (name, description,price,url_photo) VALUES('Napoli', 'Pomodoro,mozzarella,acciughe,Origano', 6,'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg/260px-Eq_it-na_pizza-margherita_sep2005_sml.jpg');
+INSERT INTO pizze (name, description,price,url_photo) VALUES('4 Formaggi', 'Mozzarella,Scamorza,Gorgonzola,Grana', 8.50,'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg/260px-Eq_it-na_pizza-margherita_sep2005_sml.jpg');
