@@ -15,8 +15,9 @@
     <div class="container">
       <div class="row">
         <div class="col-11"><h2>Le nostre Pizze</h2></div>
+        <div th:unless="${pizze.size() > 0}">The list is empty</div>
         <!-- tabella delle pizze da bootstrap dinamica -->
-        <table class="table">
+        <table  th:if="${pizze.size() > 0}" class="table">
           <thead>
             <tr>
               <th scope="col">Nome</th>

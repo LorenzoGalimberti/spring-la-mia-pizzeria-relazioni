@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.yaml.snakeyaml.events.Event;
 
 import java.util.List;
 
@@ -21,9 +22,13 @@ public class PizzaController {
     }
 
     @GetMapping("/le-nostre-pizze")
-    public String leNostrePizze(Model model){
-        List<Pizza> pizzeList = pizzaRepository.findAll(); // questa è la lista di libri presa da database
-        model.addAttribute("pizze", pizzeList); // passo la lista di libri al model
+    public String leNostrePizze(Model model) {
+
+
+
+        List<Pizza> pizzeList = pizzaRepository.findAll(); // Altrimenti, recupera la lista di tutte le pizze.
+        model.addAttribute("pizze", pizzeList);
+
 
         return "pizze-list";
     }
