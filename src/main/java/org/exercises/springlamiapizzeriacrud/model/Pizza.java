@@ -10,13 +10,25 @@ public class Pizza {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(name = "name", length = 50, nullable = false, unique = true)
     private String name;
+
+    @Column(name = "slug", length = 50, nullable = false, unique = true)
+    private String slug;
 
     private String description;
     private BigDecimal price;
     private String url_photo;
    // getters and setters
 
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
+    }
 
     public String getUrl_photo() {
         return url_photo;
