@@ -1,14 +1,16 @@
 package org.exercises.springlamiapizzeriacrud.controller;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import org.exercises.springlamiapizzeriacrud.Utils;
 import org.exercises.springlamiapizzeriacrud.model.Pizza;
 import org.exercises.springlamiapizzeriacrud.repository.PizzaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.yaml.snakeyaml.events.Event;
 
@@ -23,6 +25,21 @@ public class PizzaController {
     @GetMapping
     public String index(){
         return "homepage";
+    }
+
+
+    @GetMapping("/pizze")
+    public String listaPizze(@RequestParam(name = "orderBy", defaultValue = "price") String orderBy, Model model) {
+        List<Pizza> pizze;
+
+        if ("price".equals(orderBy)) {
+            pizze = pizzaRepository.findAllByOrderByPriceAsc(); // Ordina per prezzo ascendente
+        } else {
+            pizze = pizzaRepository.findAllByOrderByPriceDesc(); // Ordina per nome (valore predefinito)
+        }
+
+        model.addAttribute("pizze", pizze);
+        return "pizze-list";
     }
 
     @GetMapping("/le-nostre-pizze")
@@ -40,7 +57,7 @@ public class PizzaController {
     @GetMapping("/le-nostre-pizze/{slug}")
     public String visualizzaPizzaPerId(@PathVariable("slug") String slug, Model model) {
         // Usa il repository per trovare la pizza per l'ID specifico
-        Optional<Pizza> pizzaOptional = pizzaRepository.findPizzaBySlug(slug);
+        Optional<Pizza> pizzaOptional = pizzaRepository.findBySlug(slug);
 
         /*
         *  if (pizzaOptional.isPresent()) {
@@ -65,6 +82,37 @@ public class PizzaController {
 
 
 
+    }
+
+
+    // controller che mostra la pagina di creazione di un form
+
+    @GetMapping("/le-nostre-pizze/create")
+    public  String create(Model model){
+        model.addAttribute("pizza",new Pizza());
+        return "crea-pizza";
+    }
+
+    // metodo per la gestione del form
+
+    @PostMapping("/le-nostre-pizze/create")
+    // valid per la validazione biningresult è la mappa degli errori eventuali della validation
+    public  String doCreate(@Valid @ModelAttribute("pizza") Pizza formPizza , BindingResult bindingResult){
+        // verifico errori di validazione
+
+        if (! bindingResult.hasErrors()){
+            // set dello slug
+            formPizza.setSlug(Utils.getSlug(formPizza.getName()));
+            // salva l' elemento nel database
+            pizzaRepository.save(formPizza);
+        }else{
+            return "crea-pizza";
+        }
+
+
+        // per la validazione guarda la classe Pizza
+
+        return("redirect:/le-nostre-pizze");
     }
 
 

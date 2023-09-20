@@ -1,6 +1,10 @@
 package org.exercises.springlamiapizzeriacrud.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.lang.NonNull;
 
 import java.math.BigDecimal;
 
@@ -10,14 +14,28 @@ public class Pizza {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+
+    @NotBlank
+    // validation --> oracle bean validation ---> https://docs.oracle.com/javaee/7/tutorial/bean-validation001.htm
+
     @Column(name = "name", length = 50, nullable = false, unique = true)
+    //@Pattern ---> per evitare caratteri speciali
     private String name;
 
     @Column(name = "slug", length = 50, nullable = false, unique = true)
     private String slug;
 
+
+    @NotNull(message = "La descrizione è obbligatoria")// validation --> oracle bean validation ---> https://docs.oracle.com/javaee/7/tutorial/bean-validation001.htm
+    @Column(name = "description", length = 100, nullable = false, unique = true)
+    @NotBlank
     private String description;
+    @NotNull
+    @Min(0)
     private BigDecimal price;
+
+
     private String url_photo;
    // getters and setters
 

@@ -29,6 +29,22 @@
     </style>
   </head>
   <body>
+  <!-- Form per selezionare l'ordinamento -->
+<form th:action="@{/le-nostre-pizze}" method="get" class="form-inline">
+  <label for="orderBy">Ordina per:</label>
+  <div class="dropdown ml-2">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="orderByDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Seleziona un ordine
+      </button>
+      <div class="dropdown-menu" aria-labelledby="orderByDropdown">
+          <a class="dropdown-item" href="?orderBy=price">Prezzo Crescente</a>
+          <a class="dropdown-item" href="?orderBy=name">Nome</a>
+      </div>
+  </div>
+  <button type="submit" class="btn btn-primary ml-2">Ordina</button>
+</form>
+
+
     <div class="container">
       <div class="row">
         <div class="col-11 mx-auto"><h1 class="my-4 text-danger text-center ">Le Nostre Pizze</h1></div>
@@ -56,6 +72,7 @@
           </table>
         </div>
         <div th:unless="${pizze.size() > 0}">The list is empty</div>
+        <div class="col-5 d-flex justify-content-center mx-auto"><a class="btn btn-success" th:href="@{/le-nostre-pizze/create}">Crea una Pizza</a></div>
         <!-- tabella delle pizze da bootstrap dinamica -->
 
       </div>
@@ -74,7 +91,7 @@
 
           <div class="col-md-4  col-sm-6 col-12  " th:each="pizza : ${pizze}">
             <img th:src="${pizza.url_photo}" th:alt="|pizza ${pizza.name}|" class="mx-auto d-block rounded"  />
-            <small th:text="|Pizza ${pizza.name}|" class="d-flex justify-content-center py-3"> </small>
+            <small th:text="| ${pizza.name}|" class="d-flex justify-content-center py-3"> </small>
           </div>
         </div>
       </div>
