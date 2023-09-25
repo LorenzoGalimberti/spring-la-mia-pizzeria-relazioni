@@ -27,6 +27,7 @@
     </style>
   </head>
   <body>
+  <nav th:replace="fragments/navbar :: navbar(area='Pizze')"></nav>
     <!-- Form per selezionare l'ordinamento -->
 
     <form th:action="@{le-nostre-pizze}" method="GET" class="form-inline">

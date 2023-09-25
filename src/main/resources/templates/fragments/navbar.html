@@ -22,8 +22,8 @@
         <li class="nav-item">
           <a
                   class="nav-link"
-                  th:href="@{/books}"
-                  th:classappend="${#strings.equals(area,'books') ? 'active' : ''}"
+                  th:href="@{/le-nostre-pizze}"
+                  th:classappend="${#strings.equals(area,'Pizze') ? 'active' : ''}"
           >Pizze</a>
         </li>
         <!-- link per Users -->
@@ -31,7 +31,7 @@
           <a
                   class="nav-link"
                   th:href="@{/users}"
-                  th:classappend="${#strings.equals(area,'users') ? 'active' : ''}"
+                  th:classappend="${#strings.equals(area,'Clienti') ? 'active' : ''}"
           >Clienti</a>
         </li>
       </ul>
