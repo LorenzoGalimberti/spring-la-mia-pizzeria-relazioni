@@ -10,102 +10,169 @@
       integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
       crossorigin="anonymous"
     />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,400;0,700;1,300;1,400&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,400;0,700;1,300;1,400&display=swap"
+      rel="stylesheet"
+    />
     <style>
-    body{
-     background-color: #f5f5f5;
-     font-family: 'Roboto Condensed', sans-serif;
-    }
-
-
-
-
-
-
-
-
+      body {
+        background-color: #f5f5f5;
+        font-family: "Roboto Condensed", sans-serif;
+      }
+      .w_75{
+        width: 75%;
+      }
     </style>
   </head>
   <body>
-  <!-- Form per selezionare l'ordinamento -->
-<form th:action="@{/le-nostre-pizze}" method="get" class="form-inline">
-  <label for="orderBy">Ordina per:</label>
-  <div class="dropdown ml-2">
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="orderByDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Seleziona un ordine
-      </button>
-      <div class="dropdown-menu" aria-labelledby="orderByDropdown">
-          <a class="dropdown-item" href="?orderBy=price">Prezzo Crescente</a>
-          <a class="dropdown-item" href="?orderBy=name">Nome</a>
-      </div>
-  </div>
-  <button type="submit" class="btn btn-primary ml-2">Ordina</button>
-</form>
+    <!-- Form per selezionare l'ordinamento -->
 
+    <form th:action="@{le-nostre-pizze}" method="GET" class="form-inline">
+      <div class="container-fluid">
+        <div class="row d-flex justify-content-center">
+          <div
+            class="form-group col-lg-5 col-md-7 col-11 d-flex align-items-center"
+          >
+            <input
+              type="text"
+              id="keyword"
+              name="keyword"
+              class="form-control"
+            />
+          </div>
+          <div class="d-flex justify-content-center my-3 col-md-1 col-2">
+            <button type="submit" class="btn btn-outline-success">Cerca</button>
+          </div>
+        </div>
+      </div>
+    </form>
 
     <div class="container">
       <div class="row">
-        <div class="col-11 mx-auto"><h1 class="my-4 text-danger text-center ">Le Nostre Pizze</h1></div>
-        <div class="col-md-8  col-sm-11 mx-auto">
+        <div class="col-11 mx-auto">
+          <h1 class="my-4 text-danger text-center">
+            Le Nostre Pizze
+            <span class="dropdown ml-5">
+              <div
+                class="btn btn-secondary dropdown-toggle"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Ordina per
+              </div>
+
+              <ul class="dropdown-menu">
+                <li>
+                  <a
+                    class="dropdown-item"
+                    th:href="@{le-nostre-pizze?orderBy=price}"
+                    >meno costoso</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    th:href="@{le-nostre-pizze?orderBy=priceup}"
+                    >piu costoso</a
+                  >
+                </li>
+              </ul>
+            </span>
+          </h1>
+        </div>
+
+        <div class="col-md-8 col-sm-11 mx-auto">
           <table th:if="${pizze.size() > 0}" class="table">
             <thead>
-            <tr>
-              <th scope="col">Nome</th>
-              <th scope="col">Ingredienti</th>
-              <th scope="col">Prezzo €</th>
-            </tr>
+              <tr>
+                <th scope="col">Nome</th>
+                <th scope="col">Ingredienti</th>
+                <th scope="col">Prezzo €</th>
+                <th scope="col">Modifica</th>
+                
+              </tr>
             </thead>
             <tbody>
-            <tr class=" hover-row" th:each="pizza : ${pizze}">
-              <td>
-                <!-- Insert a link for the pizza's name -->
-                <a th:href="@{'/le-nostre-pizze/' + ${pizza.slug}}" class="text-decoration-none text-dark">
-                  <span th:text="${pizza.name}"></span>
-                </a>
-              </td>
-              <td th:text="${pizza.description}"></td>
-              <td th:text="${pizza.price}"></td>
-            </tr>
+              <tr class="hover-row" th:each="pizza : ${pizze}">
+                <td>
+                  <!-- Insert a link for the pizza's name -->
+                  <a
+                    th:href="@{'/le-nostre-pizze/' + ${pizza.slug}}"
+                    class="text-decoration-none text-dark"
+                  >
+                    <span th:text="${pizza.name}"></span>
+                  </a>
+                </td>
+                <td th:text="${pizza.description}"></td>
+                <td th:text="${pizza.price}"></td>
+                <td ><a th:href="@{/le-nostre-pizze/{slug}/edit(slug=${pizza.slug})}">modify</a></td>
+                <td ><a th:href="@{/le-nostre-pizze/{slug}/delete(slug=${pizza.slug})}">delete</a></td>
+
+              </tr>
             </tbody>
           </table>
         </div>
         <div th:unless="${pizze.size() > 0}">The list is empty</div>
-        <div class="col-5 d-flex justify-content-center mx-auto"><a class="btn btn-success" th:href="@{/le-nostre-pizze/create}">Crea una Pizza</a></div>
+        <div class="col-5 d-flex justify-content-center mx-auto">
+          <a class="btn btn-success" th:href="@{/le-nostre-pizze/create}"
+            >Crea una Pizza</a
+          >
+        </div>
         <!-- tabella delle pizze da bootstrap dinamica -->
-
       </div>
     </div>
 
-
-
-
-    <button class="btn btn-warning mt-5 d-flex justify-content-center mx-auto text-center py-3 px-5 fs-4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false">
+    <button
+      id="scrollButton"
+      class="btn btn-warning mt-5 d-flex justify-content-center mx-auto text-center py-3 px-5 fs-4"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#collapseExample"
+      aria-expanded="false"
+    >
       Gallery
     </button>
     <div class="container">
-    <div class="collapse mt-5" id="collapseExample">
-
-        <div class="row d-flex  gy-4 ">
-
-          <div class="col-md-4  col-sm-6 col-12  " th:each="pizza : ${pizze}">
-            <img th:src="${pizza.url_photo}" th:alt="|pizza ${pizza.name}|" class="mx-auto d-block rounded"  />
-            <small th:text="| ${pizza.name}|" class="d-flex justify-content-center py-3"> </small>
+      <div class="collapse mt-5" id="collapseExample">
+        <div class="row d-flex gy-4">
+          <div class="col-md-4 col-sm-6 col-12" th:each="pizza : ${pizze}">
+            <img
+              th:src="${pizza.url_photo}"
+              th:alt="|pizza ${pizza.name}|"
+              class="mx-auto d-block rounded w_75"
+            />
+            <small
+              th:text="| ${pizza.name}|"
+              class="d-flex justify-content-center py-3"
+            >
+            </small>
           </div>
         </div>
       </div>
-
     </div>
 
+    <script>
+      // Get a reference to the button
+      const scrollButton = document.getElementById("scrollButton");
 
-
-
-
-
-
-
-
+      // Add a click event listener to the button
+      scrollButton.addEventListener("click", function () {
+        // Get the position of the button
+        const buttonRect = scrollButton.getBoundingClientRect();
+        console.log(buttonRect.top + window.scrollY);
+        // Scroll to the top position of the button's border box
+        setTimeout(function () {
+          // Scroll to the top of the page
+          window.scrollTo({
+            top: buttonRect.top + window.scrollY,
+            behavior: "smooth",
+          });
+        }, 20); // Delay in milliseconds (1000ms = 1 second)
+      });
+    </script>
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"

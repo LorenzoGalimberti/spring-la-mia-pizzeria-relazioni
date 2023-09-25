@@ -19,6 +19,12 @@ public interface PizzaRepository extends JpaRepository<Pizza,Integer> {
     // Metodo per trovare tutte le pizze ordinate per prezzo discendente
     List<Pizza> findAllByOrderByPriceDesc();
 
+    List<Pizza> findAllByNameContainingIgnoreCase(String keyword);
+
+    @Query("SELECT p FROM Pizza p WHERE LOWER(p.description) LIKE %:keyword% OR LOWER(p.name) LIKE %:keyword%")
+    List<Pizza> findByDescriptionOrNameContainingIgnoreCase(@Param("keyword") String keyword);
+
+
 
 
 }

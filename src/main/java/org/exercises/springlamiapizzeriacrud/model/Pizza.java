@@ -16,26 +16,26 @@ public class Pizza {
     private Integer id;
 
 
-    @NotBlank
+    @NotBlank(message = "il nome della pizza non può essere vuoto !!")
     // validation --> oracle bean validation ---> https://docs.oracle.com/javaee/7/tutorial/bean-validation001.htm
 
-    @Column(name = "name", length = 50, nullable = false, unique = true)
+    @Column(name = "name", length = 50, nullable = false)
     //@Pattern ---> per evitare caratteri speciali
     private String name;
 
-    @Column(name = "slug", length = 50, nullable = false, unique = true)
+    @Column(name = "slug", length = 50, nullable = false)
     private String slug;
 
 
-    @NotNull(message = "La descrizione è obbligatoria")// validation --> oracle bean validation ---> https://docs.oracle.com/javaee/7/tutorial/bean-validation001.htm
-    @Column(name = "description", length = 100, nullable = false, unique = true)
+    //@NotNull(message = "La descrizione è obbligatoria")// validation --> oracle bean validation ---> https://docs.oracle.com/javaee/7/tutorial/bean-validation001.htm
+    @Column(name = "description", length = 100, nullable = false)
     @NotBlank
     private String description;
     @NotNull
     @Min(0)
     private BigDecimal price;
 
-
+@NotBlank
     private String url_photo;
    // getters and setters
 

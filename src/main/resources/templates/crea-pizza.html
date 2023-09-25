@@ -13,7 +13,7 @@
   </head>
   <body>
     <!-- hi a disposizione un attributo che si chiama pizza -->
-    <h1>Crea una pizza!</h1>
+    <h1 class="">Crea una pizza!</h1>
     <div class="container">
       <div class="row">
         <div class="col-7 mx-auto">
@@ -50,7 +50,6 @@
                 id="inputDescription"
                 th:field="*{description}"
                 th:errorClass="is-invalid"
-                autocomplete="off"
               />
               <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}">
                 <ul>
@@ -86,11 +85,15 @@
                 type="text"
                 class="form-control"
                 id="inputUrl"
-                th:field="*{description}"
+                th:field="*{url_photo}"
                 th:errorClass="is-invalid"
                 autocomplete="off"
               />
-
+              <div class="invalid-feedback" th:if="${#fields.hasErrors('url_photo')}">
+                <ul>
+                  <li th:each="err : ${#fields.errors('url_photo')}" th:text="${err}"></li>
+                </ul>
+              </div>
             </div>
 
             <a class="btn btn-danger" th:href="@{/le-nostre-pizze}">Cancella</a>

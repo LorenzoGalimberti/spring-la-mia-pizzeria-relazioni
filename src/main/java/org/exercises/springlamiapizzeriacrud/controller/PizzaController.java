@@ -43,11 +43,24 @@ public class PizzaController {
     }
 
     @GetMapping("/le-nostre-pizze")
-    public String leNostrePizze(Model model) {
+    public String leNostrePizze(@RequestParam(name = "orderBy",required = false) String orderBy,@RequestParam(name = "keyword", required = false) String keyword,Model model) {
+        List<Pizza> pizzeList;
+
+        if ("price".equals(orderBy)) {
+            pizzeList = pizzaRepository.findAllByOrderByPriceAsc(); // Ordina per prezzo ascendente
+        } else if ("priceup".equals(orderBy)) {
+            pizzeList = pizzaRepository.findAllByOrderByPriceDesc(); // Ordina per nome
+        } else {
+            pizzeList = pizzaRepository.findAll(); // Nessun ordinamento specificato, recupera tutte le pizze.
+        }
+
+        if (keyword != null && !keyword.isEmpty()) {
+            // Se è stata fornita una parola chiave, esegui la ricerca delle pizze con quella parola chiave.
+            pizzeList = pizzaRepository.findByDescriptionOrNameContainingIgnoreCase( keyword);
+        }
 
 
-
-        List<Pizza> pizzeList = pizzaRepository.findAll(); // Altrimenti, recupera la lista di tutte le pizze.
+        //List<Pizza> pizzeList = pizzaRepository.findAll(); // Altrimenti, recupera la lista di tutte le pizze.
         model.addAttribute("pizze", pizzeList);
 
 
@@ -115,5 +128,49 @@ public class PizzaController {
         return("redirect:/le-nostre-pizze");
     }
 
+    // get del form
+
+
+    @GetMapping("/le-nostre-pizze/{slug}/edit")
+    public  String update(@PathVariable("slug") String slug,Model model){
+        // cerco su database il libro con quell'id
+        Optional<Pizza> result = pizzaRepository.findBySlug(slug);
+
+        // verifico se il book è presente
+        if (result.isPresent()) {
+            // passo il Book al model come attributo
+            model.addAttribute("pizza", result.get());
+            // ritorno il template con il form di edit
+            return "edit";
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pizza " + slug + " not found");
+        }
+    }
+
+
+    // postmapping che riceve il submit
+    @PostMapping("/le-nostre-pizze/{slug}/edit")
+    public String doEdit(@PathVariable("slug") String slug, @Valid @ModelAttribute("pizza") Pizza formPizza,
+                         BindingResult bindingResult) {
+        Optional<Pizza> pizzaResult=pizzaRepository.findBySlug(slug);
+        formPizza.setId(pizzaResult.get().getId());
+        if (bindingResult.hasErrors()) {
+            // si sono verificati degli errori di validazione
+            return "edit"; // nome del template per ricreare la view
+        }
+        // salvo il Book
+        pizzaRepository.save(formPizza);
+        return "redirect:/le-nostre-pizze";
+    }
+
+// delete
+    @GetMapping("/le-nostre-pizze/{slug}/delete")
+
+    public String doDelete(@PathVariable("slug") String slug){
+        Optional<Pizza> pizzaResult=pizzaRepository.findBySlug(slug);
+        pizzaRepository.deleteById(pizzaResult.get().getId());
+
+        return "redirect:/le-nostre-pizze";
+    }
 
 }
