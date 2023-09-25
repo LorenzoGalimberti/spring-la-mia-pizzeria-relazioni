@@ -45,6 +45,7 @@ public class PizzaController {
     @GetMapping("/le-nostre-pizze")
     public String leNostrePizze(@RequestParam(name = "orderBy",required = false) String orderBy,@RequestParam(name = "keyword", required = false) String keyword,Model model) {
         List<Pizza> pizzeList;
+        String searchKeyword = "";
 
         if ("price".equals(orderBy)) {
             pizzeList = pizzaRepository.findAllByOrderByPriceAsc(); // Ordina per prezzo ascendente
@@ -55,6 +56,7 @@ public class PizzaController {
         }
 
         if (keyword != null && !keyword.isEmpty()) {
+            searchKeyword=keyword;
             // Se è stata fornita una parola chiave, esegui la ricerca delle pizze con quella parola chiave.
             pizzeList = pizzaRepository.findByDescriptionOrNameContainingIgnoreCase( keyword);
         }
@@ -62,6 +64,7 @@ public class PizzaController {
 
         //List<Pizza> pizzeList = pizzaRepository.findAll(); // Altrimenti, recupera la lista di tutte le pizze.
         model.addAttribute("pizze", pizzeList);
+        model.addAttribute("keyword",searchKeyword);
 
 
         return "pizze-list";
