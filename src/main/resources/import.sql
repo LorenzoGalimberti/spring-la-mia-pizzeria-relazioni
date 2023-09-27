@@ -6,3 +6,6 @@ INSERT INTO pizze (name,slug, description,price,url_photo) VALUES('4 Formaggi','
 INSERT INTO pizze (name,slug, description,price,url_photo) VALUES('4 Stagioni','4-stagioni', 'Pomodoro,Mozzarella,Cotto,Funghi,Wurstel,Carciofi', 8.50,'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg/260px-Eq_it-na_pizza-margherita_sep2005_sml.jpg');
 INSERT INTO pizze (name,slug, description,price,url_photo) VALUES('Mare e Monti','mare-e-monti', 'Pomodoro ,Mozzarella,Porcini,Frutti di Mare', 10,'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg/260px-Eq_it-na_pizza-margherita_sep2005_sml.jpg');
 INSERT INTO pizze (name,slug, description,price,url_photo) VALUES('Calzone Liscio','calzone-liscio', 'Mozzarella,Cotto', 7,'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg/260px-Eq_it-na_pizza-margherita_sep2005_sml.jpg');
+
+
+INSERT INTO offerte_speciali()

@@ -3,7 +3,9 @@ package org.exercises.springlamiapizzeriacrud.controller;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import org.exercises.springlamiapizzeriacrud.Utils;
+import org.exercises.springlamiapizzeriacrud.model.OfferteSpeciali;
 import org.exercises.springlamiapizzeriacrud.model.Pizza;
+import org.exercises.springlamiapizzeriacrud.repository.OfferteSpecialiRepository;
 import org.exercises.springlamiapizzeriacrud.repository.PizzaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,9 @@ import java.util.Optional;
 public class PizzaController {
     @Autowired
     private PizzaRepository pizzaRepository;
+
+    @Autowired
+    private OfferteSpecialiRepository offerteSpecialiRepository;
     @GetMapping
     public String index(){
         return "homepage";
@@ -87,9 +92,12 @@ public class PizzaController {
         * */
        // Pizza pizza = pizzaOptional.get();
         Pizza pizza = pizzaOptional.orElse(null);
+        List<OfferteSpeciali> offerteSpecialis;
+        offerteSpecialis=offerteSpecialiRepository.findByPizza(pizza);
 
         if (pizza != null) {
             model.addAttribute("pizza", pizza);
+            model.addAttribute("offerte",offerteSpecialis);
             return "dettagli-pizza";
         }else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
@@ -175,5 +183,79 @@ public class PizzaController {
 
         return "redirect:/le-nostre-pizze";
     }
+
+
+// CRUD OFFERTE SPECIALI
+// creazione offerte speciali
+    @GetMapping("/le-nostre-pizze/{slug}/nuova-offerta-speciale")
+    String create(@PathVariable("slug") String slug,Model model){
+        Optional<Pizza> pizzaResult=pizzaRepository.findBySlug(slug);
+        // aggiungiamo al model un attributo di tipo Book
+        model.addAttribute("offerta_speciale", new OfferteSpeciali());
+        model.addAttribute("pizza", pizzaResult.get());
+
+        return "offerte/form"; // template
+    }
+
+    @PostMapping("/le-nostre-pizze/{slug}/nuova-offerta-speciale")
+    String doCreate(@PathVariable("slug") String slug,@Valid @ModelAttribute("offerta_speciale") OfferteSpeciali formOfferta,
+                    BindingResult bindingResult){
+        Optional<Pizza> pizzaResult=pizzaRepository.findBySlug(slug);
+        if (bindingResult.hasErrors()) {
+            return "offerte/form"; // template
+        }
+        formOfferta.setPizza(pizzaResult.get());
+        offerteSpecialiRepository.save(formOfferta);
+        return "redirect:/le-nostre-pizze";
+
+
+    }
+
+    // edit offerte specili
+
+    @GetMapping("/le-nostre-pizze/{slug}/offerta-speciale/{id}/edit")
+
+    String edit(@PathVariable("slug") String slug,@PathVariable("id") int id,Model model){
+        // cerco su database il libro con quell'id
+        Optional<OfferteSpeciali> result = offerteSpecialiRepository.findById(id);
+        // verifico se il book è presente
+        if (result.isPresent()) {
+            // passo il Book al model come attributo
+            model.addAttribute("offerta_speciale", result.get());
+            // ritorno il template con il form di edit
+            return "offerte/form";
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "offerta with id " + id + " not found");
+        }
+    }
+
+    @PostMapping("/le-nostre-pizze/{slug}/offerta-speciale/{id}/edit")
+
+    public String doEdit(@PathVariable("slug") String slug,@PathVariable("id") int id,
+                         @Valid @ModelAttribute("offerta_speciale") OfferteSpeciali offertaForm, BindingResult bindingResult) {
+        // associo l'id
+        Optional<Pizza> pizza = pizzaRepository.findBySlug(slug);
+        offertaForm.setId(id);
+        offertaForm.setPizza(pizza.get());
+        // verifico la validazione
+        if (bindingResult.hasErrors()) {
+            // restituisco la view
+            return "/users/form";
+        }
+        // se non è scattata la validazione procedo a salvare
+
+        offerteSpecialiRepository.save(offertaForm);
+
+        String redirectUrl = "/le-nostre-pizze/" + slug ;
+
+// Redirect to the edit page
+        return "redirect:" + redirectUrl;
+
+
+    }
+
+
+
+
 
 }

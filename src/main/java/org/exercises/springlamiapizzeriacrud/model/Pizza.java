@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.lang.NonNull;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "pizze")
@@ -35,6 +37,8 @@ public class Pizza {
     @Min(0)
     private BigDecimal price;
 
+    @OneToMany(mappedBy = "pizza", cascade = CascadeType.REMOVE)
+    private List<OfferteSpeciali> offerteSpeciali = new ArrayList<>();
 @NotBlank
     private String url_photo;
    // getters and setters
@@ -86,5 +90,13 @@ public class Pizza {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public List<OfferteSpeciali> getOfferteSpeciali() {
+        return offerteSpeciali;
+    }
+
+    public void setOfferteSpeciali(List<OfferteSpeciali> offerteSpeciali) {
+        this.offerteSpeciali = offerteSpeciali;
     }
 }

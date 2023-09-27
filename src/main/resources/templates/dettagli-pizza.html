@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Bootstrap demo</title>
@@ -11,42 +15,81 @@
       crossorigin="anonymous"
     />
     <style>
-      body{
-    background-color: #f5f5f5;
-    font-family: 'Roboto Condensed', sans-serif;
-    }
-    #pizza-logo{
-      width: 400px;
-    }
-    .flex-center{
-      display: flex;
-      flex-direction: column; 
-      justify-content: center;
-    }
+      body {
+        background-color: #f5f5f5;
+        font-family: "Roboto Condensed", sans-serif;
+      }
+      #pizza-logo {
+        width: 400px;
+      }
+      .flex-center {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
     </style>
   </head>
   <body>
-  <nav th:replace="fragments/navbar :: navbar(area='Pizze')"></nav>
+    <nav th:replace="fragments/navbar :: navbar(area='Pizze')"></nav>
     <div class="container p-5 flex-center">
-      <div class="row d-flex justify-content-center ">
+      <div class="row d-flex justify-content-center">
         <div class="col-12 mb-3">
-          <h2
-            class="text-center text-danger"
-            th:text="${pizza.name}"
-          ></h2>
+          <h2 class="text-center text-danger" th:text="${pizza.name}"></h2>
         </div>
-        <div class="col-md-6  col-11 mx-auto d-flex justify-content-center my-4 rounded">
-                <img th:src="${pizza.url_photo}" alt=""  id="pizza-logo" class="rounded">
+        <div
+          class="col-md-6 col-11 mx-auto d-flex justify-content-center my-4 rounded"
+        >
+          <img
+            th:src="${pizza.url_photo}"
+            alt=""
+            id="pizza-logo"
+            class="rounded"
+          />
         </div>
 
-        <div class="col-7  text-center my-4">
+        <div class="col-7 text-center my-4">
           <p th:text="|Ingredienti : ${pizza.description}|"></p>
           <p th:text="|Prezzo : ${pizza.price} €|"></p>
         </div>
+      </div>
+    </div>
+    <!-- mostro le offerte speciali -->
+    <div class="container">
+      <div class="row">
+        <div class="col-8 mx-auto">
+          <table class="table">
+            <thead>
+              <tr>
+                
+                <th scope="col">Titolo</th>
+                <th scope="col">Data Inizio</th>
+                <th scope="col">Data FIne</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="offerta : ${offerte}">
+                <td th:text="${offerta.titolo}"></td>
+                <td th:text="${offerta.dataInizio}"></td>
+                <td th:text="${offerta.dataFine}"></td>
+                <td>
 
+                  <a th:href="@{/le-nostre-pizze/{slug}/offerta-speciale/{id}/edit(slug=${offerta.pizza.slug},id=${offerta.id})}"><i class="fa-solid fa-pen-to-square"></i></a></td>
+                
+              </tr>
+          
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
     
+
+    <p th:each="offerta : ${offerte}" th:text="${offerta.titolo}"></p>
+    <!-- aggiunta offerta speciale -->
+    <div class="container d-flex justify-content-center my-4">
+      <a th:href="@{/le-nostre-pizze/{slug}/nuova-offerta-speciale(slug=${pizza.slug})}" class="btn btn-success">Aggiungi un' offerta speciale</a>
+    </div>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
