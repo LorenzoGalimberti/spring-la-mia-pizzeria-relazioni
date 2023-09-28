@@ -8,4 +8,10 @@ INSERT INTO pizze (name,slug, description,price,url_photo) VALUES('Mare e Monti'
 INSERT INTO pizze (name,slug, description,price,url_photo) VALUES('Calzone Liscio','calzone-liscio', 'Mozzarella,Cotto', 7,'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg/260px-Eq_it-na_pizza-margherita_sep2005_sml.jpg');
 
 
-INSERT INTO offerte_speciali()
+INSERT INTO ingrediente(name) VALUES ('Pomodoro');
+INSERT INTO ingrediente(name) VALUES ('Mozzarella');
+INSERT INTO ingrediente(name) VALUES ('Olive Nere');
+INSERT INTO ingrediente(name) VALUES ('Wurstel');
+INSERT INTO ingrediente(name) VALUES ('Patatine Fritte');
+INSERT INTO ingrediente(name) VALUES ('Salame Piccante');
+INSERT INTO ingrediente(name) VALUES ('Salame Dolce');

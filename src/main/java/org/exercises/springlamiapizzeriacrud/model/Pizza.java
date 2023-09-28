@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.lang.NonNull;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,10 +40,21 @@ public class Pizza {
 
     @OneToMany(mappedBy = "pizza", cascade = CascadeType.REMOVE)
     private List<OfferteSpeciali> offerteSpeciali = new ArrayList<>();
-@NotBlank
+    @NotBlank
     private String url_photo;
+
+    @ManyToMany
+    private List<Ingrediente> listIngredienti = new ArrayList<>();
    // getters and setters
 
+
+    public List<Ingrediente> getListIngredienti() {
+        return listIngredienti;
+    }
+
+    public void setListIngredienti(List<Ingrediente> listIngredienti) {
+        this.listIngredienti = listIngredienti;
+    }
 
     public String getSlug() {
         return slug;
@@ -98,5 +110,22 @@ public class Pizza {
 
     public void setOfferteSpeciali(List<OfferteSpeciali> offerteSpeciali) {
         this.offerteSpeciali = offerteSpeciali;
+    }
+
+   public boolean hasOfferteSpecialiAttive() {
+        List<OfferteSpeciali> offerteSpeciali = this.getOfferteSpeciali();
+       // Ottieni la data corrente
+       LocalDate oggi = LocalDate.now();
+
+        for (OfferteSpeciali offerta : offerteSpeciali) {
+            LocalDate dataInizio = offerta.getDataInizio();
+            LocalDate dataFine = offerta.getDataFine();
+
+            // Verifica se l'offerta speciale è attiva in base alle date di inizio e fine
+            if (oggi.isAfter(dataInizio) && oggi.isBefore(dataFine.plusDays(1))) {
+                return true;
+            }
+        }
+        return false;
     }
 }
