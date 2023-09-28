@@ -3,11 +3,14 @@ package org.exercises.springlamiapizzeriacrud.controller;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import org.exercises.springlamiapizzeriacrud.Utils;
+import org.exercises.springlamiapizzeriacrud.model.Ingrediente;
 import org.exercises.springlamiapizzeriacrud.model.OfferteSpeciali;
 import org.exercises.springlamiapizzeriacrud.model.Pizza;
+import org.exercises.springlamiapizzeriacrud.repository.IngredienteRepository;
 import org.exercises.springlamiapizzeriacrud.repository.OfferteSpecialiRepository;
 import org.exercises.springlamiapizzeriacrud.repository.PizzaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +30,11 @@ public class PizzaController {
 
     @Autowired
     private OfferteSpecialiRepository offerteSpecialiRepository;
+
+    @Autowired
+    private IngredienteRepository ingredienteRepository;
+
+
     @GetMapping
     public String index(){
         return "homepage";
@@ -113,7 +121,9 @@ public class PizzaController {
 
     @GetMapping("/le-nostre-pizze/create")
     public  String create(Model model){
+        List<Ingrediente> ingredientList = ingredienteRepository.findAll();
         model.addAttribute("pizza",new Pizza());
+        model.addAttribute("ingredientList", ingredientList);
         return "crea-pizza";
     }
 
@@ -121,12 +131,13 @@ public class PizzaController {
 
     @PostMapping("/le-nostre-pizze/create")
     // valid per la validazione biningresult è la mappa degli errori eventuali della validation
-    public  String doCreate(@Valid @ModelAttribute("pizza") Pizza formPizza , BindingResult bindingResult){
+    public  String doCreate(@Valid @ModelAttribute("pizza") Pizza formPizza , BindingResult bindingResult, Model model){
         // verifico errori di validazione
 
         if (! bindingResult.hasErrors()){
             // set dello slug
             formPizza.setSlug(Utils.getSlug(formPizza.getName()));
+            model.addAttribute("ingredientList", ingredienteRepository.findAll());
             // salva l' elemento nel database
             pizzaRepository.save(formPizza);
         }else{
@@ -146,11 +157,14 @@ public class PizzaController {
     public  String update(@PathVariable("slug") String slug,Model model){
         // cerco su database il libro con quell'id
         Optional<Pizza> result = pizzaRepository.findBySlug(slug);
+        List<Ingrediente> ingredientList = ingredienteRepository.findAll();
 
         // verifico se il book è presente
         if (result.isPresent()) {
             // passo il Book al model come attributo
             model.addAttribute("pizza", result.get());
+            model.addAttribute("ingredientList", ingredientList);
+
             // ritorno il template con il form di edit
             return "edit";
         } else {
@@ -162,10 +176,12 @@ public class PizzaController {
     // postmapping che riceve il submit
     @PostMapping("/le-nostre-pizze/{slug}/edit")
     public String doEdit(@PathVariable("slug") String slug, @Valid @ModelAttribute("pizza") Pizza formPizza,
-                         BindingResult bindingResult) {
+                         BindingResult bindingResult,Model model) {
         Optional<Pizza> pizzaResult=pizzaRepository.findBySlug(slug);
         formPizza.setId(pizzaResult.get().getId());
         if (bindingResult.hasErrors()) {
+            model.addAttribute("ingredientList", ingredienteRepository.findAll());
+
             // si sono verificati degli errori di validazione
             return "edit"; // nome del template per ricreare la view
         }

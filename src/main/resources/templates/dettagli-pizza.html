@@ -53,6 +53,15 @@
         </div>
       </div>
     </div>
+
+    <!-- ingredienti -->
+    <div class="col-6 mx-auto">
+      <h4>Ingredienti</h4>
+      <ul>
+        <li th:each="ing : ${pizza.listIngredienti}" th:text="${ing.name}"></li>
+      </ul>
+    </div>
+
     <!-- mostro le offerte speciali -->
     <div class="container">
       <div class="row">
