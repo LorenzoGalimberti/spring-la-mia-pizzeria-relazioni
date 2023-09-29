@@ -255,8 +255,9 @@ public class PizzaController {
         offertaForm.setPizza(pizza.get());
         // verifico la validazione
         if (bindingResult.hasErrors()) {
+
             // restituisco la view
-            return "/users/form";
+            return "/offerte/form";
         }
         // se non è scattata la validazione procedo a salvare
 

@@ -1,0 +1,13 @@
+ body {
+        background-color: #f5f5f5;
+        font-family: "Roboto Condensed", sans-serif;
+      }
+       .bg-yellow {
+        background-color: yellow;
+    }
+      .w_75{
+        width: 75%;
+      }
+      h1{
+      color:red;
+      }
